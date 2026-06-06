@@ -3,12 +3,12 @@ const mongoose = require("mongoose");
 const Product = require("./models/Product");
 const Order = require("./models/Order");
 const axios = require("axios");
-
+require("dotenv").config();
 const cors = require("cors");
 const app = express();
 
-const PORT = process.env.PORT || 10000;
-require("dotenv").config();
+const PORT = 4000;
+
 
 app.use(cors());
 app.use(express.json());
