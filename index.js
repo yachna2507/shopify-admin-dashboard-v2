@@ -7,12 +7,12 @@ require("dotenv").config();
 const cors = require("cors");
 const app = express();
 
-const PORT = 4000;
+const PORT = process.env.PORT || 10000;
 
 app.use(cors());
 app.use(express.json());
 
-mongoose.connect("mongodb://127.0.0.1:27017/shopifyDB")
+mongoose.connect("process.env.MONGODB_URI")
 .then(() => console.log("MongoDB connected"))
 .catch((err) => console.log("MongoDB error", err));
 
