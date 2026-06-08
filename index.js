@@ -29,7 +29,7 @@ app.get("/", (req, res) => {
 app.get("/sync-products", async (req, res) => {
     try {
         const axios = require("axios");
-        const url = `${process.env.SHOPIFY_STORE_URL}/admin/api/${process.env.SHOPIFY_API_VERSION}/products.json`;
+        const url = `https://${process.env.SHOPIFY_STORE_URL}/admin/api/${process.env.SHOPIFY_API_VERSION}/products.json`;
         const response = await axios.get(url, {
             headers: {
                 "X-Shopify-Access-Token": process.env.SHOPIFY_ACCESS_TOKEN
