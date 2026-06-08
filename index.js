@@ -78,7 +78,7 @@ await newProduct.save();
          }  
 
         });
-        app.get("${API_URL}/products", async (req, res) => {
+        app.get("/products", async (req, res) => {
             try {
             const products = await
              Product.find();
@@ -92,7 +92,7 @@ await newProduct.save();
         }
         });
 //delete 
-        app.delete("${API_URL}/products/:id",
+        app.delete("/products/:id",
             async (req , res) => {
                 try {
                     await Product.findByIdAndDelete(req.params.id);
@@ -108,7 +108,7 @@ await newProduct.save();
                 }
              });
         //update
-        app.put("${API_URL}/products/:id", async (req, res) => {
+        app.put("/products/:id", async (req, res) => {
 
             try {
                 console.log(req.params.id);
@@ -141,7 +141,7 @@ product.status = req.body.status;
             }
         });
 
-        app.get("/sync-orders", async (req, res) => {
+        app.get("sync-orders", async (req, res) => {
             try {
                  
                 
