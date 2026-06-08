@@ -3,17 +3,19 @@ const mongoose = require("mongoose");
 const Product = require("./models/Product");
 const Order = require("./models/Order");
 const axios = require("axios");
-require("dotenv").config();
+
 const cors = require("cors");
 const app = express();
-
+require("dotenv").config();
 const PORT = process.env.PORT || 10000;
+console.log("PORT:" , PORT);
+console.log("MONGO URI exists:", !!process.env.MONGODB_URI);
 
 
 app.use(cors());
 app.use(express.json());
 
-mongoose.connect("process.env.MONGODB_URI")
+mongoose.connect(process.env.MONGODB_URI)
 .then(() => console.log("MongoDB connected"))
 .catch((err) => console.log("MongoDB error", err));
 
