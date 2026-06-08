@@ -5,15 +5,17 @@ const Order = require("./models/Order");
 const axios = require("axios");
 
 const cors = require("cors");
+app.use(cors());
 const app = express();
+app.use(express.json());
 require("dotenv").config();
 const PORT = process.env.PORT || 10000;
 console.log("PORT:" , PORT);
 console.log("MONGO URI exists:", !!process.env.MONGODB_URI);
 
 
-app.use(cors());
-app.use(express.json());
+
+
 
 mongoose.connect(process.env.MONGODB_URI)
 .then(() => console.log("MongoDB connected"))
