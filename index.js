@@ -5,17 +5,17 @@ const Order = require("./models/Order");
 const axios = require("axios");
 
 const cors = require("cors");
-app.use(cors());
+
 const app = express();
-app.use(express.json());
+
 require("dotenv").config();
 const PORT = process.env.PORT || 10000;
 console.log("PORT:" , PORT);
 console.log("MONGO URI exists:", !!process.env.MONGODB_URI);
 
+app.use(cors());
 
-
-
+app.use(express.json());
 
 mongoose.connect(process.env.MONGODB_URI)
 .then(() => console.log("MongoDB connected"))
@@ -78,7 +78,7 @@ await newProduct.save();
          }  
 
         });
-        app.get("/products", async (req, res) => {
+        app.get("${process.env.REACT_APP_API_URL}/products", async (req, res) => {
             try {
             const products = await
              Product.find();
@@ -92,7 +92,7 @@ await newProduct.save();
         }
         });
 //delete 
-        app.delete("/products/:id",
+        app.delete("${process.env.REACT_APP_API_URL}/products/:id",
             async (req , res) => {
                 try {
                     await Product.findByIdAndDelete(req.params.id);
@@ -108,7 +108,7 @@ await newProduct.save();
                 }
              });
         //update
-        app.put("/products/:id", async (req, res) => {
+        app.put("${process.env.REACT_APP_API_URL}/products/:id", async (req, res) => {
 
             try {
                 console.log(req.params.id);
