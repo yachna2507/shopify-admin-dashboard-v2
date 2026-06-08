@@ -28,7 +28,7 @@ app.get("/", (req, res) => {
 
 });
                                                                
-app.get("/sync-products", async (req, res) => {
+app.get("${API_URL}/sync-products", async (req, res) => {
     try {
         const axios = require("axios");
         const url = `https://${process.env.SHOPIFY_STORE_URL}/admin/api/${process.env.SHOPIFY_API_VERSION}/products.json`;
@@ -78,7 +78,7 @@ await newProduct.save();
          }  
 
         });
-        app.get("/products", async (req, res) => {
+        app.get("${API_URL}/products", async (req, res) => {
             try {
             const products = await
              Product.find();
@@ -92,7 +92,7 @@ await newProduct.save();
         }
         });
 //delete 
-        app.delete("/products/:id",
+        app.delete("${API_URL}/products/:id",
             async (req , res) => {
                 try {
                     await Product.findByIdAndDelete(req.params.id);
@@ -108,7 +108,7 @@ await newProduct.save();
                 }
              });
         //update
-        app.put("/products/:id", async (req, res) => {
+        app.put("${API_URL}/products/:id", async (req, res) => {
 
             try {
                 console.log(req.params.id);
