@@ -29,15 +29,16 @@ app.get("/", (req, res) => {
 app.get("/sync-products", async (req, res) => {
     try {
         const axios = require("axios");
-        const url = `${process.env.SHOPIFY_STORE_URL}/admin/api/${process.env.SHOPIFY_API_VERSION}/products.json`;
+        const url = `https://${process.env.SHOPIFY_STORE_URL}/admin/api/${process.env.SHOPIFY_API_VERSION}/products.json`;
         const response = await axios.get(url, {
             headers: {
                 "X-Shopify-Access-Token": process.env.SHOPIFY_ACCESS_TOKEN
             },
 
         });
-        
-        const existingProducts = await Product.findOne({
+        const products = response.data.products;
+        for (const product of products) {
+        const existingProduct = await Product.findOne({
             shopifyId: product.id,
         });
       if (!existingProduct) {
@@ -60,10 +61,10 @@ await newProduct.save();
             existingProduct.quantity = product.variants?.[0]?.inventory_quantity || 0;
             await existingProduct.save();
         }
-        
+        }
         return res.json({ 
-            success: true,
-        message: "products synced successfully",
+            "success": true,
+        "message": "products synced successfully",
     });
 } catch (error) {
             console.log(error);
@@ -72,7 +73,8 @@ await newProduct.save();
             success: false,
             message: "Error fetching Shoipify Products ",
             });
-         }   
+         }  
+
         });
         app.get("/products", async (req, res) => {
             try {
