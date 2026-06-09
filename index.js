@@ -169,7 +169,7 @@ product.status = req.body.status;
                         },
                         {
                             orderId: item.id,
-                            customerName: item.customer? item.customer.first_name + " + item.customer.last_name : "Guest",
+                            customerName: item.customer? `${item.customer.first_name} ${item.customer.last_name}` : "Guest",
 
                             product_name: item.line_items?.name || "Product",
 
