@@ -175,7 +175,7 @@ product.status = req.body.status;
 
                             price:
                             Number(item.total_price),
-                            quantity: item.quantity),
+                            quantity: item.quantity,
                             status:
                             item.financial_status === 'paid',
                         },
