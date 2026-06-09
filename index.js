@@ -171,7 +171,7 @@ product.status = req.body.status;
                             orderId: item.id,
                             customerName: item.customer? `${item.customer.first_name} ${item.customer.last_name}` : "Guest",
 
-                            product_name: item.line_items?.name || "Product",
+                            product_name: item.line_items?.[0]?.name || "Product",
 
                             price: Number(item.total_price),
                             quantity: item.line_items?.reduce((sum, li) => sum + li.quantity, 0) || 1, 
@@ -189,8 +189,7 @@ product.status = req.body.status;
             } catch (error) {
                 console.log(error);
                 res.status(500).json([]);
-                });
-            }
+                }
         });
     app.listen(PORT, () => console.log(`Server running on ${PORT}` ));
 
