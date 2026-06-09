@@ -148,42 +148,8 @@ product.status = req.body.status;
             try {
                  
                 res.set('Cache-Control', 'no-store');
-                const response = await axios.get(
-                    `${process.env.SHOPIFY_STORE_URL}/admin/api/${process.env.SHOPIFY_API_VERSION}/orders.json`, 
-                    {
-                        headers: {
-                            "X-Shopify-Access-Token": process.env.SHOPIFY_ACCESS_TOKEN
-                        },
-                    }
-                );
-                console.log(response.data.orders);
-                const shopifyOrders = response.data.orders || [];
-                for ( 
-                    const item
-                    of shopifyOrders
-                ) {
-                    await 
-                    Order.findOneAndUpdate(
-                        {
-                            orderId: item.id
-                        },
-                        {
-                            orderId: item.id,
-                            customerName: item.customer? `${item.customer.first_name} ${item.customer.last_name}` : "Guest",
-
-                            product_name: item.line_items?.[0]?.name || "Product",
-
-                            price: Number(item.total_price),
-                            quantity: item.line_items?.reduce((sum, li) => sum + li.quantity, 0) || 1, 
-                            status: item.financial_status === 'paid'? 'Delivered':
-                                     item.financial_status === 'refunded'? 'Cancelled' : 'Pending'
-                        },
-                        {
-                            upsert: true
-                        }
-                    );
-                }
-               const orders = await Order.find().sort({ createdAt: -1 });
+                const orders = await Order.find().sort({ createdAt: -1 });
+                console.log("DB se orders mile:", orders.length);
                res.json(orders);
                 
             } catch (error) {
