@@ -144,10 +144,10 @@ product.status = req.body.status;
             }
         });
 
-        app.get("/sync-orders", async (req, res) => {
+        app.get('/sync-orders', async (req, res) => {
             try {
                  
-                
+                res.set('Cache-Control', 'no-store');
                 const response = await axios.get(
                     `${process.env.SHOPIFY_STORE_URL}/admin/api/${process.env.SHOPIFY_API_VERSION}/orders.json`, 
                     {
@@ -157,9 +157,10 @@ product.status = req.body.status;
                     }
                 );
                 console.log(response.data.orders);
+                const shopifyOrders = response.data.orders || [];
                 for ( 
                     const item
-                    of response.data.orders
+                    of shopifyOrders
                 ) {
                     await 
                     Order.findOneAndUpdate(
@@ -169,28 +170,26 @@ product.status = req.body.status;
                         {
                             orderId: item.id,
                             customerName:
-                            item.customer?.first_name,
+                            item.customer?.first_name + " + (item.customer?.last_name || "") || "Guest",
 
-                            product_name: item.product_name,
+                            product_name: item.line_items?.name || "Product",
 
-                            price:
-                            Number(item.total_price),
-                            quantity: item.quantity,
-                            status:
-                            item.financial_status === 'paid',
+                            price: Number(item.total_price),
+                            quantity: item.line_items?.reduce((sum, li) => sum + li.quantity, 0) || 1, 
+                            status: item.financial_status === 'paid'? 'Delivered':
+                                     item.financial_status === 'refunded'? 'Cancelled' : 'Pending'
                         },
                         {
                             upsert: true
                         }
                     );
                 }
-               const orders = await Order.find();
+               const orders = await Order.find().sort({ createdAt: -1 });
                res.json(orders);
                 
             } catch (error) {
                 console.log(error);
-                res.json({
-                    success: false
+                res.status(500).json([]);
                 });
             }
         });
