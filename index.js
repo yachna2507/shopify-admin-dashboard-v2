@@ -13,7 +13,10 @@ const PORT = process.env.PORT || 10000;
 console.log("PORT:" , PORT);
 console.log("MONGO URI exists:", !!process.env.MONGODB_URI);
 
-app.use(cors());
+app.use(cors({
+    origin: "*",
+    method: ["GET", "POST", "PUT", "DELETE"]
+}));
 
 app.use(express.json());
 
