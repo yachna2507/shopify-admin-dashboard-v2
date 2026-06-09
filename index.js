@@ -28,7 +28,7 @@ app.get("/", (req, res) => {
 
 });
                                                                
-app.post("sync-products", async (req, res) => {
+app.post("/api/sync-products", async (req, res) => {
     try {
         const axios = require("axios");
         const url = `https://${process.env.SHOPIFY_STORE_URL}/admin/api/${process.env.SHOPIFY_API_VERSION}/products.json`;
