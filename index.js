@@ -168,15 +168,16 @@ product.status = req.body.status;
                         },
                         {
                             orderId: item.id,
-                            customer:
+                            customerName:
                             item.customer?.first_name,
 
-                            email: item.email,
+                            product_name: item.product_name,
 
-                            totalPrice:
-                            item.total_price,
-                            financialStatus:
-                            item.financial_status,
+                            price:
+                            Number(item.total_price),
+                            quantity: item.quantity),
+                            status:
+                            item.financial_status === 'paid',
                         },
                         {
                             upsert: true
